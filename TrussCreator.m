@@ -29,18 +29,17 @@ L = [0
      0
      0.5 * 9.81
      0];
- 
+
+if (draw)
+    drawTruss(C,X,Y);
+end
+
 cost = getCost(C,X,Y);
 correct = Valid(C,X,Y,cost,lengthMatrix);
 lengthMatrix = getLengthMatrix(C,X,Y);
 
 if (check && ~correct)
     return
-end
-
-if (draw)
-    G = graph(getAdjacencyMatrix(C));
-    G.plot();
 end
 
 save(filename,'C','Sx','Sy','X','Y','L');
