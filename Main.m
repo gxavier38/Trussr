@@ -1,5 +1,5 @@
 clear;
-filename = 'TrussDesign0_SampleFromProjectManual';
+filename = 'PracticeProblem';
 check = false;
 draw = false;
 
@@ -32,6 +32,8 @@ for i = 1:numMembers
     fType = "(T)";
     if (T(i) < 0) 
         fType = "(C)";
+    elseif (T(i) == 0)
+        fType = "";
     end
     disp("m" + i + ": " + abs(T(i)) + " " + fType);
 end
@@ -56,7 +58,7 @@ end
 bucklingForces = getBucklingForces(lengthMatrix);
 scalingRatio = bucklingForces ./ comp;
 [maxSR, maxSRindex] = max(scalingRatio);
-maxLoad = load / maxSR;
+maxLoad = 1 / maxSR;
 disp("Theoretical max load/cost ratio in N/$: " + maxLoad/cost);
 
 disp(newline);
