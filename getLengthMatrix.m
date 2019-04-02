@@ -5,9 +5,9 @@ function [lengthMatrix] = getLengthMatrix(C, X, Y)
 lengthMatrix = zeros(numMembers,1);
 
 for i = 1:numMembers
-   row = find(C(:,i));
-   v1 = row(1);
-   v2 = row(2);
+   indices = find(C(:,i));
+   v1 = indices(1);
+   v2 = indices(2);
    
    dx = X(v1) - X(v2);
    dy = Y(v1) - Y(v2);

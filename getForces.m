@@ -7,9 +7,9 @@ Ax = zeros(numJoints, numMembers);
 Ay = zeros(numJoints, numMembers);
 
 for i = 1:numMembers
-    rows = find(C(:,i));
-    v1 = rows(1);
-    v2 = rows(2);
+    indices = find(C(:,i));
+    v1 = indices(1);
+    v2 = indices(2);
     len = lengthMatrix(i);
 
     Ax(v1,i) = (X(v1) - X(v2)) / len;
