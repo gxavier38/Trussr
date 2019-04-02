@@ -6,15 +6,18 @@ rows = numJoints;
 totalLength = 0;
 
 for i = 1:rows
-   [joint1index, joint2index] = find(C(:,i));
-   
-   dx = X(joint1index) - X(joint2index);
-   dy = Y(joint1index) - Y(joint2index);
+    indices = find(C(:,i));
+    v1 = indices(1);
+    v2 = indices(2);
 
-   len = sqrt(power(dx,2) + power(dy,2));
-   
-   totalLength = totalLength + len;
-end 
+
+    dx = X(v1) - X(v2);
+    dy = Y(v1) - Y(v2);
+
+    len = sqrt(power(dx,2) + power(dy,2));
+
+    totalLength = totalLength + len;
+end
 
 cost = 10 * numJoints + totalLength;
 end
