@@ -1,3 +1,4 @@
+clear;
 draw = false;
 check = true;
 filename = 'TrussDesign1_BenGlennEliAhnafVikrant_A2.mat';
