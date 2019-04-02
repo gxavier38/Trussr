@@ -31,6 +31,13 @@ L = [0
      0.5 * 9.81
      0];
 
+[numJoints, numMembers] = size(C);
+assert(length(X) == numJoints);
+assert(length(Y) == numJoints);
+assert(size(Sx,1) == numJoints);
+assert(size(Sy,1) == numJoints);
+assert(size(L,1) == numJoints * 2);
+ 
 if (draw)
     drawTruss(C,X,Y);
 end
