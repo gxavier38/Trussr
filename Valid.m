@@ -21,13 +21,17 @@ end
 
 %% Validate lengths
 for i = 1:numMembers
+    indices = find(C(:,i));
+    v1 = indices(1);
+    v2 = indices(2);
+    
     if (lengthMatrix(i) < 10)
        correct = false;
-       disp("Member between joints " + joint1index + " and " + joint2index + " too short");
+       disp("Member between joints " + v1 + " and " + v2 + " too short");
     end
     if (lengthMatrix(i) > 15)
        correct = false;
-       disp("Member between joints " + joint1index + " and " + joint2index + " too long");
+       disp("Member between joints " + v1 + " and " + v2 + " too long");
     end
 end
 
