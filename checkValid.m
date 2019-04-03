@@ -1,4 +1,4 @@
-function [correct] = checkValid(C, X, Y, cost, lengthMatrix)
+function [correct] = checkValid(C, X, Y, cost, lengthMatrix, print)
 %VALID Checks whether a truss is valid
 correct = true;
 
@@ -9,14 +9,18 @@ for i = 1:numMembers
     t = find(C(:,i));
     if (length(t) ~= 2)
         correct = false;
-        disp("Member " + i + " is not connected to 2 joints");
+        if (print == true)
+            disp("Member " + i + " is not connected to 2 joints");
+        end 
     end
 end
 
 %% Validate cost
 if (cost >= 320)
     correct = false;
-    disp("Cost too high");
+    if (print == true)
+        disp("Cost too high");
+    end
 end
 
 %% Validate lengths
@@ -27,38 +31,49 @@ for i = 1:numMembers
     
     if (lengthMatrix(i) < 10)
        correct = false;
-       disp("Member between joints " + v1 + " and " + v2 + " too short");
+       if (print == true)
+           disp("Member between joints " + v1 + " and " + v2 + " too short");
+       end
     end
     if (lengthMatrix(i) > 15)
        correct = false;
-       disp("Member between joints " + v1 + " and " + v2 + " too long");
+       if (print == true)
+           disp("Member between joints " + v1 + " and " + v2 + " too long");
+       end
     end
 end
 
 %% Validate Joints and Members
 if (numMembers ~= (2 * numJoints - 3))
     correct = false;
-    disp("M = 2J - 3 not satisfied");
+    if (print == true)
+        disp("M = 2J - 3 not satisfied");
+    end    
 end
 
 %% Check that graph is planar
 if (numMembers > (3 * numJoints - 6))
     correct = false;
-    disp("Graph is non-planar");
+    if (print == true)
+        disp("Graph is non-planar");
+    end
 end
 
 %% Check that joint exists at 20.5 <= x <= 21.5
 if (isempty(X <= 21.5 & X >= 20.5))
     correct = false;
-    disp("No joint exists between 20.5 and 21.5cm");
+    if (print == true)
+        disp("No joint exists between 20.5 and 21.5cm");
+    end
 end
 
 %% Check that total length is >= 54.5
 maxX = max(X);
 if (maxX < 54.5)
     correct = false;
-    disp("Truss is not long enough");
+    if (print == true)
+        disp("Truss is not long enough");
+    end
 end
-
 end
 

@@ -11,7 +11,7 @@ end
 
 cost = getCost(C,X,Y);
 lengthMatrix = getLengthMatrix(C,X,Y);
-correct = checkValid(C,X,Y,cost,lengthMatrix);
+correct = checkValid(C,X,Y,cost,lengthMatrix,true);
 if (check && ~correct)
     return
 end
