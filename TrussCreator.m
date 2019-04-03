@@ -44,7 +44,7 @@ end
 
 cost = getCost(C,X,Y);
 lengthMatrix = getLengthMatrix(C,X,Y);
-correct = Valid(C,X,Y,cost,lengthMatrix);
+correct = checkValid(C,X,Y,cost,lengthMatrix);
 lengthMatrix = getLengthMatrix(C,X,Y);
 
 if (check && ~correct)

@@ -11,7 +11,7 @@ end
 
 cost = getCost(C,X,Y);
 lengthMatrix = getLengthMatrix(C,X,Y);
-correct = Valid(C,X,Y,cost,lengthMatrix);
+correct = checkValid(C,X,Y,cost,lengthMatrix);
 if (check && ~correct)
     return
 end
@@ -65,5 +65,3 @@ disp(newline);
 disp("Other statistics:");
 disp("Maximum theoretical load in N: " + maxLoad);
 disp("First member to buckle: " + maxSRindex);
-
-

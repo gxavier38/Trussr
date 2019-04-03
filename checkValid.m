@@ -1,4 +1,4 @@
-function [correct] = Valid(C, X, Y, cost, lengthMatrix)
+function [correct] = checkValid(C, X, Y, cost, lengthMatrix)
 %VALID Checks whether a truss is valid
 correct = true;
 
