@@ -51,11 +51,19 @@ if (numMembers ~= (2 * numJoints - 3))
     end    
 end
 
-%% Check that graph is planar
-if (numMembers > (3 * numJoints - 6))
+%% Validate Joints and Members
+if (numMembers ~= (2 * numJoints - 3))
     correct = false;
     if (print == true)
-        disp("Graph is non-planar");
+        disp("M = 2J - 3 not satisfied");
+    end    
+end
+
+%% Check if any joints are above end points
+if (~isempty(find(Y > 0)))
+    correct = false;
+    if (print == true)
+        disp("Joints extend above end points");
     end
 end
 
