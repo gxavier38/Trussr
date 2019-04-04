@@ -1,9 +1,9 @@
 clear;
-loadfilename = 'trusses/GeneticDesign0.mat';
+loadfilename = 'trusses/Eli2.mat';
 savefilename = 'trusses/GeneticDesign0.mat';
 check = false;
-gens = 100000;
-maxLocChange = 1;
+gens = 10000000;
+maxLocChange = 0.01;
 
 load(loadfilename);
 
@@ -15,6 +15,9 @@ bestFitness = getFit(C, X, Y, L, Sx, Sy);
 
 figure;
 l = animatedline();
+fprintf("Initial fitness is %f\n", bestFitness);
+addpoints(l,0,bestFitness);
+drawnow;
 
 %% Algorithm
 for i = 1:gens
@@ -33,7 +36,7 @@ for i = 1:gens
         bestFitness = fitness;
     end
     
-    if (mod(i,1000) == 0)
+    if (mod(i,100000) == 0)
         fprintf("Fitness at generation %d is %f\n", i, bestFitness);
         addpoints(l,i,bestFitness);
         drawnow;
