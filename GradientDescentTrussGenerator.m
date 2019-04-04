@@ -2,7 +2,7 @@ clear;
 loadfilename = 'trusses/Temp.mat';
 savefilename = 'trusses/GeneticDesign0.mat';
 check = false;
-gens = 100;
+gens = 1000;
 pop = 100;
 maxLocChange = 0.25;
 
