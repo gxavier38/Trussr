@@ -25,7 +25,6 @@ A = [Ax Sx; Ay Sy];
 [rowsA, colsA] = size(A);
 assert(rowsA == 2 * numJoints);
 assert(colsA == numMembers + 3);
-
-T = inv(A) * L;
+[T,~] = lsqr(A,L);
 end
 

@@ -1,11 +1,10 @@
 clear;
-loadfilename = 'TrussDesign0_SampleFromProjectManual.mat';
+loadfilename = 'Temp.mat';
 savefilename = 'GeneticDesign0.mat';
 check = false;
-gens = 5000;
+gens = 100;
 perGen = 100;
-indChange = 10;
-maxLocChange = 2;
+maxLocChange = 0.25;
 
 load(loadfilename);
 
@@ -13,55 +12,54 @@ load(loadfilename);
 
 bestX = X;
 bestY = Y;
-bestL = L;
 bestFitness = getFit(C, X, Y, L, Sx, Sy);
 
+figure;
+l = animatedline();
+
+%% Algorithm
 for i = 1:gens
-    tempbestX = bestX;
-    tempbestY = bestY;
-    tempbestL = bestL;
-    tempbestFitness = bestFitness;
+    tempBestX = bestX;
+    tempBestY = bestY;
+    tempBestFit = bestFitness;
     
     for j = 1:perGen
-        randMatrix = (2 * maxLocChange) * rand(numJoints,1) - maxLocChange;
-        X = bestX + randMatrix.';
-        randMatrix = (2 * maxLocChange) * rand(numJoints,1) - maxLocChange;
-        Y = bestY + randMatrix.';
+        randMatrix = randn(numJoints,1) * maxLocChange;
+        randMatrix(1) = 0;
+        tempX = bestX + randMatrix.';
+        randMatrix = randn(numJoints,1) * maxLocChange;
+        randMatrix(1) = 0;
+        tempY = bestY + randMatrix.';
         
-        ind = find(X >= 20.5 & X <= 21.5);
-        if (isempty(ind))
-            continue;
-        end
-        
-        [~,ind] = min(Y(ind));
-        L = zeros(numJoints * 2, 1);
-        L(numJoints + ind, 1) = 1;
-        
-        fitness = getFit(C, X, Y, L, Sx, Sy);
-        if (fitness > bestFitness)
-           tempbestX = X;
-           tempbestY = Y;
-           tempbestL = L;
-           tempbestFitness = fitness;
+        fitness = getFit(C, tempX, tempY, L, Sx, Sy);
+        if (fitness >= tempBestFit)
+            tempBestX = tempX;
+            tempBestY = tempY;
+            tempBestFit = fitness;
         end
     end
     
-    bestX = tempbestX;
-    bestY = tempbestY;
-    bestL = tempbestL;
-    bestFitness = tempbestFitness;
+    bestX = tempBestX;
+    bestY = tempBestY;
+    bestFitness = tempBestFit;
     
-    disp("Fitness at generation " + i + " is " + bestFitness);
+    fprintf("Fitness at generation %d is %f\n", i, bestFitness);
+    
+    addpoints(l,i,bestFitness);
+    drawnow;
 end
 
-
-if (bestFitness ~= 1)
+if (bestFitness == -1)
     return 
 end
 
+%% Draw trusses
+figure;
+drawTruss(C, X, Y, 'black');
+hold on;
+drawTruss(C, bestX, bestY, 'blue');
+
+%% Save generated truss
 X = bestX;
 Y = bestY;
-L = bestL;
-
-drawTruss(C, X, Y);
-save(filename,'C','Sx','Sy','X','Y','L');
+save(savefilename,'C','Sx','Sy','X','Y','L');
