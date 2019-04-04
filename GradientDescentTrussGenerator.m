@@ -1,9 +1,8 @@
 clear;
-loadfilename = 'trusses/Temp.mat';
+loadfilename = 'trusses/GeneticDesign0.mat';
 savefilename = 'trusses/GeneticDesign0.mat';
 check = false;
-gens = 1000;
-pop = 100;
+gens = 10000;
 maxLocChange = 0.25;
 
 load(loadfilename);
@@ -19,29 +18,20 @@ l = animatedline();
 
 %% Algorithm
 for i = 1:gens
-    tempBestX = bestX;
-    tempBestY = bestY;
-    tempBestFit = bestFitness;
     
-    for j = 1:pop
-        randMatrix = randn(numJoints,1) * maxLocChange;
-        randMatrix(1) = 0;
-        tempX = bestX + randMatrix.';
-        randMatrix = randn(numJoints,1) * maxLocChange;
-        randMatrix(1) = 0;
-        tempY = bestY + randMatrix.';
-        
-        fitness = getFit(C, tempX, tempY, L, Sx, Sy);
-        if (fitness >= tempBestFit)
-            tempBestX = tempX;
-            tempBestY = tempY;
-            tempBestFit = fitness;
-        end
+    randMatrix = randn(numJoints,1) * maxLocChange;
+    randMatrix(1) = 0;
+    tempX = bestX + randMatrix.';
+    randMatrix = randn(numJoints,1) * maxLocChange;
+    randMatrix(1) = 0;
+    tempY = bestY + randMatrix.';
+
+    fitness = getFit(C, tempX, tempY, L, Sx, Sy);
+    if (fitness >= bestFitness)
+        bestX = tempX;
+        bestY = tempY;
+        bestFitness = fitness;
     end
-    
-    bestX = tempBestX;
-    bestY = tempBestY;
-    bestFitness = tempBestFit;
     
     fprintf("Fitness at generation %d is %f\n", i, bestFitness);
     
