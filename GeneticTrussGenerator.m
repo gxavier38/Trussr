@@ -2,83 +2,63 @@ clear;
 loadfilename = 'trusses/Temp.mat';
 savefilename = 'trusses/GeneticDesign0.mat';
 check = false;
-gens = 100;
-pop = 100;
-maxLocChange = 0.25;
+gens = 1000;
+pop = 50;
+protect = 10;
+maxLocChange = 0.01;
 
 load(loadfilename);
 
 [numJoints, numMembers] = size(C);
 
-bestX1 = X;
-bestY1 = Y;
-bestX2 = X;
-bestY2 = Y;
-bestFitness1 = getFit(C, X, Y, L, Sx, Sy);
-bestFitness2 = bestFitness1;
+bestX = zeros(pop,numJoints);
+bestY = zeros(pop,numJoints);
+bestFitness = zeros(pop,1);
+
+for i = 1:protect
+    bestX(i,:) = X;
+    bestY(i,:) = Y;
+    bestFitness(i) = getFit(C, bestX(i,:), bestY(i,:), L, Sx, Sy);
+end
+for i = (protect + 1):pop
+    bestX(i,:) = mutate(X, maxLocChange);
+    bestY(i,:) = mutate(Y, maxLocChange);
+    bestFitness(i) = getFit(C, bestX(i,:), bestY(i,:), L, Sx, Sy);
+end
 
 figure;
 l = animatedline();
+maxBestFitness = max(bestFitness);
+fprintf("Initial fitness is %f\n", maxBestFitness);
+addpoints(l, 0, maxBestFitness);
 
 %% Algorithm
 for i = 1:gens
-    tempBestX1 = bestX1;
-    tempBestY1 = bestY1;
-    tempBestX2 = bestX2;
-    tempBestY2 = bestY2;
-    tempBestFit1 = bestFitness1;
-    tempBestFit2 = bestFitness2;
+    [~,saveIdx] = maxk(bestFitness,protect);
     
     for j = 1:pop
-        tempX = bestX1;
-        tempY = bestY1;
-        
-        % Crossover
-        for k = 1:numJoints
-             if (rand > 0.5)
-                tempX(k) = bestX2(k);
-             end
-             if (rand > 0.5)
-                tempY(k) = bestY2(k);
-             end
+        if (ismember(j,saveIdx))
+            continue; 
         end
         
-        % Mutation
-        randMatrix = randn(numJoints,1) * maxLocChange;
-        randMatrix(1) = 0;
-        tempX = tempX + randMatrix.';
-        randMatrix = randn(numJoints,1) * maxLocChange;
-        randMatrix(1) = 0;
-        tempY = tempY + randMatrix.';
-        
-        fitness = getFit(C, tempX, tempY, L, Sx, Sy);
-        
-        % Store results
-        if (fitness >= tempBestFit1 && rand > 0.5)
-            tempBestX1 = tempX;
-            tempBestY1 = tempY;
-            tempBestFit1 = fitness;
-        else
-            tempBestX2 = tempX;
-            tempBestY2 = tempY;
-            tempBestFit2 = fitness;
-        end
+        v1 = select(bestFitness);
+        v2 = select(bestFitness);
+        tempX = crossover(bestX(v1,:), bestX(v2,:));
+        tempY = crossover(bestY(v1,:), bestY(v2,:));
+        tempX = mutate(tempX, maxLocChange);
+        tempY = mutate(tempY, maxLocChange);
+        bestX(j,:) = tempX;
+        bestY(j,:) = tempY;
+        bestFitness(j) = getFit(C, bestX(j,:), bestY(j,:), L, Sx, Sy);
     end
     
-    bestX1 = tempBestX1;
-    bestY1 = tempBestY1;
-    bestX2 = tempBestX2;
-    bestY2 = tempBestY2;
-    bestFitness1 = tempBestFit1;
-    bestFitness2 = tempBestFit2;
-    
-    maxBestFitness = max(bestFitness1, bestFitness2);
+    maxBestFitness = max(bestFitness);
     fprintf("Fitness at generation %d is %f\n", i, maxBestFitness);
     addpoints(l, i, maxBestFitness);
     drawnow;
 end
 
-if (maxBestFitness == -1)
+if (max(bestFitness) == -1 && check)
     return 
 end
 
@@ -86,14 +66,39 @@ end
 figure;
 drawTruss(C, X, Y, 'black');
 hold on;
-
-if (maxBestFitness == bestFitness1)
-    X = bestX1;
-    Y = bestY1;
-else
-    X = bestX2;
-    Y = bestY2;
-end
+[~,idx] = max(bestFitness);
+X = bestX(idx,:);
+Y = bestY(idx,:);
 drawTruss(C, X, Y, 'blue');
-
 save(savefilename,'C','Sx','Sy','X','Y','L');
+
+function [idx] = select(bestFitness)
+    numJoints = length(bestFitness);
+    idx = numJoints;
+    total = sum(bestFitness);
+    choice = rand * total;
+    for i = 1:numJoints
+        choice = choice - bestFitness(i);
+        if (choice <= 0)
+            idx = i;
+            return
+        end
+    end
+end
+
+function [X] = crossover(X1,X2)
+    numJoints = length(X1);
+    X = X1;
+    for k = 1:numJoints
+         if (rand > 0.5)
+            X(k) = X2(k);
+         end
+    end
+end
+
+function [M] = mutate(M, maxLocChange)
+    numJoints = length(M);
+    randMatrix = randn(numJoints,1) * maxLocChange;
+    randMatrix(1) = 0;
+    M = M + randMatrix.';
+end
