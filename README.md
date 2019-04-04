@@ -3,7 +3,7 @@ Tool used to aid the design and analysis of trusses for the EK301 A2 straw truss
 
 Project group members: Benjamin Ducharme, Glenn Liem, Ahnaf Tajwar, Eli Forstadt and Vikrant Sharma.
 
-There are two main files: TrussCreator and Main. See below for instructions.
+There are three main files: TrussCreator, TrussGenerator and Main. See below for instructions.
 
 ## Truss Creator
 Use to create a truss to be stored in a .mat file.
@@ -22,3 +22,6 @@ Use to analyse a truss stored in a .mat file.
 * Set the filename to the truss .mat file to be loaded.
 * Set check to true if you do not want to analyse a truss that does not meet the project's requirements.
 * Set draw to true if you want to see the truss drawn.
+
+## Truss Generator
+Use to computationally generate an improved final design based on an initial design
