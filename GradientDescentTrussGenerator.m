@@ -2,8 +2,8 @@ clear;
 loadfilename = 'trusses/GeneticDesign0.mat';
 savefilename = 'trusses/GeneticDesign0.mat';
 check = false;
-gens = 10000;
-maxLocChange = 0.25;
+gens = 100000;
+maxLocChange = 1;
 
 load(loadfilename);
 
@@ -33,10 +33,11 @@ for i = 1:gens
         bestFitness = fitness;
     end
     
-    fprintf("Fitness at generation %d is %f\n", i, bestFitness);
-    
-    addpoints(l,i,bestFitness);
-    drawnow;
+    if (mod(i,1000) == 0)
+        fprintf("Fitness at generation %d is %f\n", i, bestFitness);
+        addpoints(l,i,bestFitness);
+        drawnow;
+    end
 end
 
 if (bestFitness == -1)
