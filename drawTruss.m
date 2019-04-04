@@ -1,15 +1,15 @@
-function [] = drawTruss(C,X,Y)
+function [] = drawTruss(C,X,Y,color)
 %DRAWTRUSS Plots a truss
 [~,numMembers] = size(C);
 
-scatter(X,Y);
+scatter(X,Y,color);
 hold on;
 
 for i = 1:numMembers
    row = find(C(:,i));
    v1 = row(1);
    v2 = row(2);
-   plot([X(v1),X(v2)],[Y(v1),Y(v2)]);
+   plot([X(v1),X(v2)],[Y(v1),Y(v2)],color);
 end
 
 rectangle('Position', [-5 -20 5 20],'EdgeColor', 'green', 'FaceColor', 'green');

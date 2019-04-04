@@ -1,12 +1,12 @@
 clear;
-filename = 'PracticeProblem';
+filename = 'Temp.mat';
 check = false;
 draw = false;
 
 load(filename);
 
 if (draw)
-    drawTruss(C,X,Y);
+    drawTruss(C,X,Y,'black');
 end
 
 cost = getCost(C,X,Y);
@@ -28,6 +28,13 @@ disp("EK301, Section A2, Ben Glenn Eli Ahnaf Vikrant " + date);
 load = L(find(L));
 disp("Load in Newtons: " + load);
 disp("Member forces in Newtons:");
+
+for i = 1:Trows
+    if (abs(T(i)) < 0.0001)
+        T(i) = 0;
+    end
+end
+
 for i = 1:numMembers
     fType = "(T)";
     if (T(i) < 0) 
