@@ -43,6 +43,15 @@ for i = 1:numMembers
     end
 end
 
+%% Check that joint exists between 20.5 and 21.5
+if (isempty(find(X >= 20.5 & X <= 21.5)))
+    correct = false;
+    if (print == true)
+        disp("No joint exists between 20.5 and 21.5");
+    end    
+end
+
+
 %% Validate Joints and Members
 if (numMembers ~= (2 * numJoints - 3))
     correct = false;
