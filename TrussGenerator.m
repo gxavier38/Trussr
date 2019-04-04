@@ -1,9 +1,9 @@
 clear;
-loadfilename = 'Temp.mat';
-savefilename = 'GeneticDesign0.mat';
+loadfilename = 'trusses/Temp.mat';
+savefilename = 'trusses/GeneticDesign0.mat';
 check = false;
 gens = 100;
-perGen = 100;
+pop = 100;
 maxLocChange = 0.25;
 
 load(loadfilename);
@@ -23,7 +23,7 @@ for i = 1:gens
     tempBestY = bestY;
     tempBestFit = bestFitness;
     
-    for j = 1:perGen
+    for j = 1:pop
         randMatrix = randn(numJoints,1) * maxLocChange;
         randMatrix(1) = 0;
         tempX = bestX + randMatrix.';
