@@ -1,5 +1,5 @@
 clear;
-filename = 'Temp.mat';
+filename = 'trusses/GeneticDesign0.mat';
 check = false;
 draw = false;
 

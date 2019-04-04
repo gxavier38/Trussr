@@ -1,7 +1,7 @@
 clear;
 draw = true;
 check = true;
-filename = 'Temp.mat';
+filename = 'trusses/Temp.mat';
 
 C = [1 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
      1 0 1 0 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
