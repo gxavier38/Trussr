@@ -51,14 +51,6 @@ if (numMembers ~= (2 * numJoints - 3))
     end    
 end
 
-%% Validate Joints and Members
-if (numMembers ~= (2 * numJoints - 3))
-    correct = false;
-    if (print == true)
-        disp("M = 2J - 3 not satisfied");
-    end    
-end
-
 %% Check if any joints are above end points
 if (~isempty(find(Y > 0)))
     correct = false;
@@ -67,20 +59,22 @@ if (~isempty(find(Y > 0)))
     end
 end
 
-%% Check that joint exists at 20.5 <= x <= 21.5
-if (isempty(X <= 21.5 & X >= 20.5))
+%% Check that joint exists at (0,0)
+idx = find(X == 0);
+temp = Y(idx);
+if (isempty(idx) || isempty(temp == 0))
     correct = false;
     if (print == true)
-        disp("No joint exists between 20.5 and 21.5cm");
+        disp("No joint exists at (0,0)");
     end
 end
 
-%% Check that total length is >= 54.5
+%% Check that total length is 53.5 <= l <= 55.5 
 maxX = max(X);
-if (maxX < 54.5)
+if (maxX <= 53.5 || maxX >= 55.5)
     correct = false;
     if (print == true)
-        disp("Truss is not long enough");
+        disp("Truss length is not 54.5");
     end
 end
 end
