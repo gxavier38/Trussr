@@ -1,6 +1,6 @@
 clear;
-filename = 'trusses/GeneticDesign0.mat';
-check = false;
+filename = 'trusses/Eli2.mat';
+check = true;
 draw = false;
 
 load(filename);
@@ -55,17 +55,18 @@ disp("Cost of truss: $" + ceil(cost));
 % Failure analysis
 comp = zeros(numMembers,1);
 for i = 1:numMembers
-   if (T(i) > 0)
-       comp(i) = inf;
+   if (T(i) >= 0)
+       comp(i) = 0;
        continue;
    end
    comp(i) = -T(i);
 end
 
 bucklingForces = getBucklingForces(lengthMatrix);
-scalingRatio = bucklingForces ./ comp;
+scalingRatio = comp ./ bucklingForces;
+disp(scalingRatio);
 [maxSR, maxSRindex] = max(scalingRatio);
-maxLoad = 1 / maxSR;
+maxLoad = load / maxSR;
 disp("Theoretical max load/cost ratio in N/$: " + maxLoad/cost);
 
 disp(newline);
