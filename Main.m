@@ -1,7 +1,7 @@
 clear;
-filename = 'trusses/Eli2.mat';
+filename = 'trusses/Square Truss.mat';
 check = true;
-draw = false;
+draw = true;
 
 load(filename);
 
@@ -25,8 +25,8 @@ disp(newline);
 disp("EK301, Section A2, Ben Glenn Eli Ahnaf Vikrant " + date);
 
 % Loads
-load = L(find(L));
-disp("Load in Newtons: " + load);
+appliedLoad = L(find(L));
+disp("Load in Newtons: " + appliedLoad);
 disp("Member forces in Newtons:");
 
 for i = 1:Trows
@@ -64,9 +64,8 @@ end
 
 bucklingForces = getBucklingForces(lengthMatrix);
 scalingRatio = comp ./ bucklingForces;
-disp(scalingRatio);
 [maxSR, maxSRindex] = max(scalingRatio);
-maxLoad = load / maxSR;
+maxLoad = appliedLoad / maxSR;
 disp("Theoretical max load/cost ratio in N/$: " + maxLoad/cost);
 
 disp(newline);
