@@ -25,9 +25,9 @@ for i = 1:numMembers
 end
 
 bucklingForces = getBucklingForces(lengthMatrix);
-scalingRatio = bucklingForces ./ comp;
-[maxSR,~] = max(scalingRatio);
-maxLoad = 1 / maxSR;
+scalingRatio = comp ./ bucklingForces;
+[maxSR, ~] = max(scalingRatio);
+maxLoad = load / maxSR;
 fitness = maxLoad/cost;
 end
 
