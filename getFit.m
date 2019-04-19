@@ -13,21 +13,24 @@ end
 T = getForces(C,X,Y,L,Sx,Sy,lengthMatrix);
 
 [~,numMembers] = size(C);
+[Trows,~] = size(T);
 
 % Failure analysis
 comp = zeros(numMembers,1);
 for i = 1:numMembers
-   if (T(i) > 0)
-       comp(i) = inf;
+   if (T(i) >= 0)
+       comp(i) = 0;
        continue;
    end
    comp(i) = -T(i);
 end
 
+appliedLoad = L(find(L));
+
 bucklingForces = getBucklingForces(lengthMatrix);
-scalingRatio = bucklingForces ./ comp;
-[maxSR,~] = max(scalingRatio);
-maxLoad = 1 / maxSR;
+scalingRatio = comp ./ bucklingForces;
+[maxSR, ~] = max(scalingRatio);
+maxLoad = appliedLoad / maxSR;
 fitness = maxLoad/cost;
 end
 
